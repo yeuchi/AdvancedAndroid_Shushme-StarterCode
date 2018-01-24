@@ -19,6 +19,7 @@ package com.example.android.shushme;
 import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -38,6 +39,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.example.android.shushme.provider.PlaceContract;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -148,7 +150,14 @@ public class MainActivity extends AppCompatActivity implements
                 Log.i(TAG, "No place selected");
                 return;
             }
+
+            String placeID = place.getId();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(PlaceContract.PlaceEntry.COLUMN_PLACE_ID, placeID);
+            getContentResolver().insert(PlaceContract.PlaceEntry.CONTENT_URI, contentValues);
         }
+
+
     }
 
     // TODO (5) Override onConnected, onConnectionSuspended and onConnectionFailed for GoogleApiClient

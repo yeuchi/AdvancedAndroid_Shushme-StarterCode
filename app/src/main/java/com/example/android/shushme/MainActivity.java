@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -38,6 +39,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.android.shushme.provider.PlaceContract;
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private Activity mainActivity;
     private GoogleApiClient mClient;
+    private Geofencing mGeofencing;
+    private boolean mIsEnabled;
 
     /**
      * Called when the activity is starting
@@ -89,8 +93,27 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter = new PlaceListAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
+        Switch onOffSwitch = (Switch) findViewById(R.id.enable_switch);
+        mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
+        onOffSwitch.setChecked(mIsEnabled);
+        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+                editor.putBoolean(getString(R.string.setting_enabled), isChecked);
+                mIsEnabled = isChecked;
+                editor.commit();
+
+                if(isChecked)
+                    mGeofencing.registerAllGeofences();
+                else
+                    mGeofencing.unRegisterAllGeofences();
+            }
+        });
+
         // TODO (4) Create a GoogleApiClient with the LocationServices API and GEO_DATA_API
-        GoogleApiClient client = new GoogleApiClient.Builder(this)
+        mClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -98,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements
                 .enableAutoManage(this,this)
                 .build();
 
+        mGeofencing = new Geofencing(this, mClient);
         mainActivity = this;
         handleEvents();
     }

@@ -26,6 +26,8 @@
             android:authorities="com.example.android.shushme"
             android:exported="false"/>
 
+        <receiver android:name=".GeofenceBroadcastReceiver"/>
+
     </application>
 
     <!-- TODO (2) Add uses-permission tags for INTERNET and ACCESS_FINE_LOCATION -->

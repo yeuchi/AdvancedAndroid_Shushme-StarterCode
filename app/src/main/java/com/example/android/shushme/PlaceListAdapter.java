@@ -38,6 +38,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.Plac
     public PlaceListAdapter(Context context,
                             PlaceBuffer places) {
         this.mContext = context;
+        // TODO (4) Take a PlaceBuffer as an input and store it as a local private member mPlaces
         this.mPlaces = places;
     }
 
@@ -64,7 +65,8 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.Plac
      */
     @Override
     public void onBindViewHolder(PlaceViewHolder holder, int position) {
-
+        // TODO (6) Implement onBindViewHolder to set the view holder's Name and Address text fields
+        // from the Place object at the specified position in mPlaces
     }
 
 
@@ -76,11 +78,13 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.Plac
     @Override
     public int getItemCount()
     {
+        // TODO (5) Update getItemCount to return mPlaces's item count
         return (null==mPlaces)?
                 0:
                 mPlaces.getCount();
     }
 
+    //TODO (7) Implement a public method swapPlaces that replaces the current mPlaces PlaceBuffer with a new one
     public void swapPlaces(PlaceBuffer newPlaces)
     {
         mPlaces = newPlaces;

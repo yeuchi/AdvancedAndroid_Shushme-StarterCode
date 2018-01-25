@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements
         // Set up the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.places_list_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // TODO (3) Modify the Adapter to take a PlaceBuffer in the constructor
         mAdapter = new PlaceListAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -137,12 +139,14 @@ public class MainActivity extends AppCompatActivity implements
                     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                     Intent intent = builder.build(mainActivity);
                     startActivityForResult(intent, PLACE_PICKER_REQUEST);
+
+                    //TODO (2) call refreshPlacesData in GoogleApiClient's onConnected and in the Add New Place button click event
+                    refreshPlacesData();
                 }
                 catch (Exception ex)
                 {
                     Toast.makeText(context, "exception thrown", Toast.LENGTH_LONG).show();
                 }
-                refreshPlacesData();
             }
         });
     }
@@ -188,6 +192,11 @@ public class MainActivity extends AppCompatActivity implements
         Log.i(TAG, "API Client Connection Failed!");
     }
 
+    // TODO (1) Implement a method called refreshPlacesData that:
+    // - Queries all the locally stored Places IDs
+    // - Calls Places.GeoDataApi.getPlaceById with that list of IDs
+    // Note: When calling Places.GeoDataApi.getPlaceById use the same GoogleApiClient created
+    // in MainActivity's onCreate (you will have to declare it as a private member)
     public void refreshPlacesData()
     {
         Uri uri = PlaceContract.PlaceEntry.CONTENT_URI;
@@ -206,6 +215,8 @@ public class MainActivity extends AppCompatActivity implements
         {
             guids.add(data.getString(data.getColumnIndex(PlaceContract.PlaceEntry.COLUMN_PLACE_ID)));
         }
+
+        //TODO (8) Set the getPlaceById callBack so that onResult calls the Adapter's swapPlaces with the result
         PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mClient,
                 guids.toArray(new String[guids.size()]));
 

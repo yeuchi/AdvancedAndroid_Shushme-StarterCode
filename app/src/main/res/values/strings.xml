@@ -5,4 +5,6 @@
     <string name="setting_enabled" translatable="false">EnabledSetting</string>
     <string name="settings_label">Settings</string>
     <string name="enable_geofences">Enable Geofences</string>
+    <string name="silent_mode_activated">Silent mode activated</string>
+    <string name="back_to_normal">Back to normal</string>
 </resources>

@@ -69,7 +69,7 @@ public class Geofencing implements ResultCallback
         {
             LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient,
                                                             getGeofencePendingIntent())
-                    .setResultCallback(this);
+                                                            .setResultCallback(this);
         }
         catch (SecurityException ex)
         {

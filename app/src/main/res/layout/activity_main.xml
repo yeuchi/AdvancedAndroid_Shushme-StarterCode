@@ -70,6 +70,13 @@
             android:layoutDirection="rtl"
             android:text="Location Permissions" />
 
+        <CheckBox
+            android:id="@+id/ring_permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:text="Ringtone Permissions" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

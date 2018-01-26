@@ -19,6 +19,7 @@ package com.example.android.shushme;
 import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +28,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -144,6 +147,26 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        CheckBox checkRingPermission = (CheckBox) findViewById(R.id.ring_permission);
+        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        if(Build.VERSION.SDK_INT >=24 && nm.isNotificationPolicyAccessGranted())
+        {
+            checkRingPermission.setChecked(false);
+
+            checkRingPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+        }
+        else
+        {
+            checkRingPermission.setChecked(true);
+            checkRingPermission.setEnabled(false);
+        }
 
         // TODO (9) Implement the Add Place Button click event to show  a toast message with the permission status
         Button button = (Button)findViewById(R.id.add_location);

@@ -1,3 +1,5 @@
+Udacity Android nano-degree exercise, starter source code
+
 # ShushMe
 Google Places API demo app
 
